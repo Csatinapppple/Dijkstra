@@ -14,11 +14,9 @@ d	0 0  10  0  0
 e	0 0  60  20 0
 */
 
-enum class state:int{
-	UNKNOWN  = false,
-	KNOWN = true,
-	INFINITY = INT_MAX,
-};
+constexpr bool KNOWN = true;
+constexpr bool UNKNOWN = false;
+constexpr int INFINITY = INT_MAX;
 
 struct result{
 	int *cost;
@@ -26,9 +24,17 @@ struct result{
 };
 
 
+void
+print_arr(int *arr, int n){
+	for(int i = 0; i < n; i++){
+		printf("%d ",arr[i]);
+	}
+	puts("");
+}
+
 void print_arr_bool(int *arr, int n){
   for(int i = 0; i < n; i++){
-    printf("node[%d] = %s, ",i , (arr[i] == (int)state::UNKNOWN) ? "unknown" : "known");
+    printf("node[%d] = %s, ",i , (arr[i] == UNKNOWN) ? "unknown" : "known");
   }
   puts("");
 }
@@ -36,7 +42,7 @@ void print_arr_bool(int *arr, int n){
 void print_arr_cost(int *arr, int n){
   for(int i = 0; i<n; i++){
     switch(arr[i]){
-      case (int) state::INFINITY: 
+      case INFINITY: 
         printf("node[%d] = infinity, ", i);
         break;
       default:
@@ -47,13 +53,13 @@ void print_arr_cost(int *arr, int n){
   puts("");
 }
 
-//returns unknown node with least cost
+//returns unknown node index with least cost
 int min_distance(int *known, int *cost, int n){
-  int index,cmp=INT_MAX;
+  int index=-1,cmp=INFINITY;
   for(int i = 0; i < n; i++){
     if(
-      known[i] != (int) state::UNKNOWN &&
-      cost[i] != (int) state::INFINITY &&
+      known[i] == UNKNOWN &&
+			cost[i] != INFINITY &&
       cost[i] < cmp
         ){
       index = i, cmp= cost[i];
@@ -66,27 +72,46 @@ int min_distance(int *known, int *cost, int n){
 struct result dijkstra (int *graph, int source, int n){
 	int size=n * sizeof(int),
 			*cost= (int *) malloc(size),
-			*known=	(int *)	malloc(size),
+			*known=	(int *)	alloca(size),
 			known_size=0,
-			*map=(int *)	alloca(size);
+			*map=(int *)	malloc(size);
 	
-	set_int_arr(cost, (int) state::INFINITY, n);
-	set_int_arr(known, (int) state::UNKNOWN, n);
+	set_int_arr(cost, INFINITY, n);
+	set_int_arr(known, UNKNOWN, n);
 	set_int_arr(map, 0, n);
-	
 
   int current = source;
   cost[source] = 0;
-  known[source] = true;
 
   print_arr_bool(known, n);
   print_arr_cost(cost, n);
 
 	while( known_size != n ){
     
-    int node = min_distance(known, cost, n);		
+    int current_node = min_distance(known, cost, n);		
+		printf("current_node = %d\n", current_node);
+		known[current_node] = KNOWN;
+
+		for(int node_path = 0; node_path < n; node_path++){
 			
-    
+			printf("%d \n", (current_node * n) + node_path);
+
+			int current_node_cost = cost[current_node];
+			int path_value = graph[current_node * n + node_path];
+			int total_cost = path_value + current_node_cost;
+			if(
+				path_value != 0 &&
+				cost[node_path] > total_cost
+			){
+				puts("in");
+				cost[node_path] = total_cost;
+				map[node_path] = current_node;
+			}
+			
+		}
+
+ 		known_size++;
+		printf("known_size = %d\n",known_size);
 
 	}
 	return (struct result) {.cost = cost, .map = map};
@@ -114,6 +139,9 @@ int main()
 	print_2darr(graph, n , n);
 	
 	struct result r = dijkstra(graph,0,n);
+	
+	print_arr(r.map, n);
+	print_arr(r.cost, n);
 
 	return 0;
 }
