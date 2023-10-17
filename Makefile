@@ -1,2 +1,2 @@
 main:
-	g++ src/main.cpp -std=c++11
+	g++ src/* -std=c++11 -l SDL2
