@@ -1,3 +1,4 @@
+#define SDL_MAIN_HANDLED
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -15,7 +16,20 @@ int main()
 	/* Let us create the example graph discussed above */
 	int size =  n * n;
 	int *graph = (int *) alloca( size * sizeof(int) );
-	
+  
+  if(SDL_Init(SDL_INIT_VIDEO) < 0){
+    printf("could not initialize, ERROR CODE = %s\n", SDL_GetError());
+  }
+
+  SDL_Window *window = SDL_CreateWindow(
+    "test",
+    SDL_WINDOWPOS_UNDEFINED,
+    SDL_WINDOWPOS_UNDEFINED,
+    640,
+    480,
+    SDL_WINDOW_OPENGL
+  );
+
 	set_int_arr(graph, 0, size );
 
 	print_2darr(graph, n , n);
