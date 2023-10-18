@@ -14,10 +14,6 @@ struct result{
 };
 
 extern
-void
-print_arr(int *arr, int n);
-
-extern
 void print_arr_bool(int *arr, int n);
 extern
 void print_arr_cost(int *arr, int n);

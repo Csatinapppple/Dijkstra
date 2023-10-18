@@ -7,14 +7,6 @@
 #include "tools.h"
 
 
-void
-print_arr(int *arr, int n){
-	for(int i = 0; i < n; i++){
-		printf("%d ",arr[i]);
-	}
-	puts("");
-}
-
 void print_arr_bool(int *arr, int n){
   for(int i = 0; i < n; i++){
     printf("node[%d] = %s, ",i , (arr[i] == D_UNKNOWN) ? "unknown" : "known");

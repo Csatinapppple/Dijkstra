@@ -2,6 +2,14 @@
 #include <cstdio>
 #include "tools.h"
 
+void
+print_arr(int *arr, int n){
+    for(int i = 0; i < n; i++){
+          printf("%d ",arr[i]);
+            }
+      puts("");
+}
+
 void print_2darr(int *arr, int x, int y){
   for ( int ii = 0; ii < y; ii++ ){
     for ( int jj = 0; jj <  x ; jj++ ){
