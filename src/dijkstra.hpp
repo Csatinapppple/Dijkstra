@@ -8,11 +8,6 @@ constexpr bool D_KNOWN = true;
 constexpr bool D_UNKNOWN = false;
 constexpr int D_INFINITY = INT_MAX;
 
-struct result{
-	int *cost;
-	int *map;
-};
-
 extern
 void print_arr_bool(int *arr, int n);
 extern
@@ -22,6 +17,6 @@ extern
 int min_distance(int *known, int *cost, int n);
 extern
 //returns malloced result representing the map of costs and sequence
-struct result dijkstra (int *graph, int source, int n);
+void dijkstra (int *graph, int *map, int *cost,  int source, int n);
 
 #endif

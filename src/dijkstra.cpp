@@ -44,12 +44,10 @@ int min_distance(int *known, int *cost, int n){
 }
 
 //returns malloced result representing the map of costs and sequence
-struct result dijkstra (int *graph, int source, int n){
+void dijkstra (int *graph,int *map, int *cost, int source, int n){
 	int size=n * sizeof(int),
-			*cost= (int *) malloc(size),
 			*known=	(int *)	alloca(size),
-			known_size=0,
-			*map=(int *)	malloc(size);
+			known_size=0;
 	
 	set_int_arr(cost, D_INFINITY, n);
 	set_int_arr(known, D_UNKNOWN, n);
@@ -89,5 +87,5 @@ struct result dijkstra (int *graph, int source, int n){
 		printf("known_size = %d\n",known_size);
 
 	}
-	return (struct result) {.cost = cost, .map = map};
+
 }
